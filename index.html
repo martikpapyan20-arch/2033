@@ -1,272 +1,275 @@
 <!DOCTYPE html>
+
 <html lang="ru">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>2033 Mods</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 
-:root{
---bg:#050506;
---card:#0b0b0f;
---line:rgba(255,255,255,.12);
---text:rgba(255,255,255,.9);
---muted:rgba(255,255,255,.6);
-}
+/* ===============================
+   GLOBAL
+================================ */
 
 *{
+box-sizing:border-box;
 margin:0;
 padding:0;
-box-sizing:border-box;
-font-family:Arial;
 }
 
 body{
-background:radial-gradient(1200px 700px at 50% 10%,#101117 0%,#050506 60%,#000 100%);
-color:var(--text);
-height:100vh;
-overflow:hidden;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
+background:#050506;
+color:white;
+font-family:'Cinzel',serif;
+overflow-x:hidden;
 }
 
-/* дым */
+/* ===============================
+   SMOKE BACKGROUND
+================================ */
 
-canvas{
+body::before{
+content:"";
 position:fixed;
-top:0;
-left:0;
-z-index:0;
+width:200%;
+height:200%;
+background:
+radial-gradient(circle at 20% 30%,rgba(255,255,255,.08),transparent 40%),
+radial-gradient(circle at 70% 60%,rgba(255,255,255,.06),transparent 45%),
+radial-gradient(circle at 40% 80%,rgba(255,255,255,.05),transparent 40%);
+animation:smokeMove 20s infinite linear;
+z-index:-1;
 }
 
-/* центр */
+@keyframes smokeMove{
+0%{transform:translateY(0)}
+50%{transform:translateY(-60px)}
+100%{transform:translateY(0)}
+}
+
+/* ===============================
+   HERO
+================================ */
 
 .hero{
 text-align:center;
-z-index:2;
-position:relative;
+padding-top:120px;
+padding-bottom:120px;
 }
-
-/* логотип */
 
 .logo{
-width:320px;
+width:420px;
+max-width:90%;
+display:block;
+margin:auto;
 cursor:pointer;
-animation:float 6s ease-in-out infinite;
-filter:drop-shadow(0 0 35px rgba(255,255,255,.3));
-transition:.4s;
+filter:drop-shadow(0 0 35px rgba(255,255,255,.35));
+animation:logoFloat 6s ease-in-out infinite;
 }
 
-.logo:hover{
-transform:scale(1.05);
-filter:drop-shadow(0 0 60px rgba(255,255,255,.5));
+@keyframes logoFloat{
+0%{transform:translateY(0)}
+50%{transform:translateY(-15px)}
+100%{transform:translateY(0)}
 }
-
-/* текст */
 
 .tagline{
-margin-top:25px;
-letter-spacing:5px;
-color:var(--muted);
+margin-top:40px;
+font-size:20px;
+letter-spacing:4px;
+opacity:.9;
+}
+
+.hint{
+margin-top:10px;
 font-size:14px;
+opacity:.6;
 }
 
-/* карточки */
+/* ===============================
+   SECTION TITLE
+================================ */
 
-.cards{
-position:absolute;
-top:55%;
-left:50%;
-transform:translate(-50%,-50%);
-display:flex;
+.section-title{
+text-align:center;
+margin:80px 0 40px;
+font-size:20px;
+letter-spacing:6px;
+}
+
+/* ===============================
+   GRID
+================================ */
+
+.grid{
+max-width:1200px;
+margin:auto;
+display:grid;
+grid-template-columns:1fr 1fr;
 gap:40px;
-opacity:0;
-pointer-events:none;
-transition:1s;
+padding:0 20px 100px;
 }
 
-.cards.show{
-opacity:1;
-pointer-events:auto;
-}
+/* ===============================
+   CARD
+================================ */
 
 .card{
-width:300px;
-padding:30px;
-background:rgba(10,10,12,.85);
-border:1px solid var(--line);
-transition:.4s;
-backdrop-filter:blur(10px);
+background:rgba(0,0,0,.35);
+border:1px solid rgba(255,255,255,.15);
+padding:25px;
+backdrop-filter:blur(6px);
+transition:.3s;
 }
 
 .card:hover{
-transform:translateY(-10px);
-box-shadow:0 0 40px rgba(255,255,255,.08);
+transform:translateY(-6px);
+border-color:rgba(255,255,255,.35);
+}
+
+/* ===============================
+   CREATOR INFO
+================================ */
+
+.creator-head{
+display:flex;
+align-items:center;
+gap:15px;
+margin-bottom:15px;
+}
+
+.avatar{
+width:40px;
+height:40px;
+border-radius:50%;
+border:1px solid rgba(255,255,255,.4);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:18px;
 }
 
 .name{
 font-size:18px;
 letter-spacing:2px;
-margin-bottom:15px;
 }
 
-.price{
-margin:6px 0;
-color:var(--muted);
+.role{
+font-size:12px;
+opacity:.6;
 }
 
-/* кнопки */
+/* ===============================
+   PRICES
+================================ */
 
-.links{
-margin-top:20px;
+.prices{
+border:1px solid rgba(255,255,255,.25);
+padding:12px 15px;
+margin-bottom:20px;
 display:flex;
-flex-direction:column;
-gap:10px;
+justify-content:space-between;
+font-size:14px;
 }
 
-.links a{
-border:1px solid var(--line);
+/* ===============================
+   BUTTONS
+================================ */
+
+.buttons{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+}
+
+.buttons a{
+flex:1;
+text-align:center;
 padding:10px;
+border:1px solid rgba(255,255,255,.3);
 text-decoration:none;
 color:white;
 font-size:13px;
-transition:.3s;
+transition:.25s;
 }
 
-.links a:hover{
+.buttons a:hover{
 background:white;
 color:black;
 }
 
-/* анимация */
+/* ===============================
+   VIDEO
+================================ */
 
-@keyframes float{
+iframe{
+width:100%;
+height:260px;
+border:none;
+}
 
-0%{transform:translateY(0)}
+/* ===============================
+   RESPONSIVE
+================================ */
 
-50%{transform:translateY(-12px)}
+@media(max-width:900px){
 
-100%{transform:translateY(0)}
+.grid{
+grid-template-columns:1fr;
+}
+
+.logo{
+width:300px;
+}
 
 }
 
 </style>
+
 </head>
 
 <body>
 
-<canvas id="smoke"></canvas>
+<!-- HERO -->
 
-<div class="hero">
+<section class="hero">
 
-<img src="./assets/logo2.png" class="logo" id="logo">
+<img src="./assets/logo2033.png" class="logo">
 
 <div class="tagline">
 REDUX • GUN PACKS • GTA 5 RP
 </div>
 
+<div class="hint">
+НАЖМИ НА ЛОГОТИП
 </div>
 
-<div class="cards" id="cards">
+</section>
+
+<!-- CREATORS -->
+
+<div class="section-title">CREATORS</div>
+
+<div class="grid">
+
+<!-- CARD 1 -->
 
 <div class="card">
 
+<div class="creator-head">
+<div class="avatar">?</div>
+<div>
 <div class="name">.CHKMNP</div>
-
-<div class="price">Gun Pack — 1500₽+</div>
-<div class="price">Redux — 1000₽+</div>
-
-<div class="links">
-<a href="https://www.youtube.com/@chkmnpys" target="_blank">YouTube</a>
-<a href="https://t.me/yagichmods" target="_blank">Telegram</a>
-<a href="https://discord.gg/UBzjrRff" target="_blank">Discord</a>
+<div class="role">YOUTUBE CREATOR</div>
+</div>
 </div>
 
-</div>
-
-<div class="card">
-
-<div class="name">NBAHONE</div>
-
-<div class="price">Gun Pack — 1500₽+</div>
-<div class="price">Redux — 1000₽+</div>
-
-<div class="links">
-<a href="https://www.youtube.com/@nbahone5rp" target="_blank">YouTube</a>
-<a href="https://t.me/yagichmods" target="_blank">Telegram</a>
-<a href="https://discord.gg/UBzjrRff" target="_blank">Discord</a>
-</div>
-
-</div>
-
-</div>
-
-<script>
-
-/* открыть карточки */
-
-document.getElementById("logo").onclick = () => {
-
-document.getElementById("cards").classList.toggle("show")
-
-}
-
-/* дым */
-
-const canvas=document.getElementById("smoke")
-const ctx=canvas.getContext("2d")
-
-let w=canvas.width=window.innerWidth
-let h=canvas.height=window.innerHeight
-
-let p=[]
-
-for(let i=0;i<160;i++){
-
-p.push({
-x:Math.random()*w,
-y:Math.random()*h,
-r:Math.random()*2+1,
-v:Math.random()*0.4+0.1
-})
-
-}
-
-function draw(){
-
-ctx.clearRect(0,0,w,h)
-
-p.forEach(e=>{
-
-e.y-=e.v
-
-if(e.y<0){
-e.y=h
-e.x=Math.random()*w
-}
-
-ctx.beginPath()
-ctx.arc(e.x,e.y,e.r,0,Math.PI*2)
-ctx.fillStyle="rgba(255,255,255,.05)"
-ctx.fill()
-
-})
-
-requestAnimationFrame(draw)
-
-}
-
-draw()
-
-window.onresize=()=>{
-w=canvas.width=window.innerWidth
-h=canvas.height=window.innerHeight
-}
-
-</script>
-
-</body>
-</html>
+<div class="prices">
+<div>Gun Pack</div>
+<div><b>1500₽+</b></div>
+</
