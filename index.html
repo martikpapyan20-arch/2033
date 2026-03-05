@@ -1,275 +1,504 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="ru">
 <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1200" />
+  <title>2033 Mods</title>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&display=swap" rel="stylesheet">
 
-<title>2033 Mods</title>
+  <style>
+    :root{
+      --bg:#050506;
+      --panel:rgba(10,10,12,.55);
+      --panel2:rgba(10,10,12,.75);
+      --line:rgba(255,255,255,.14);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.62);
+      --glow:rgba(255,255,255,.28);
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html{ scroll-behavior:smooth; }
 
-<style>
+    body{
+      background: radial-gradient(1200px 700px at 50% 10%, #101117 0%, var(--bg) 60%, #000 100%);
+      color:var(--text);
+      font-family:"Cinzel", serif;
+      overflow-x:hidden;
+    }
 
-/* ===============================
-   GLOBAL
-================================ */
+    /* Smoke canvas */
+    #smoke{
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      pointer-events:none;
+      opacity:.9;
+    }
 
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-}
+    /* Subtle noise */
+    .noise{
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+      mix-blend-mode:overlay;
+      opacity:.22;
+    }
 
-body{
-background:#050506;
-color:white;
-font-family:'Cinzel',serif;
-overflow-x:hidden;
-}
+    /* Layout (PC only) */
+    .wrap{
+      width:1200px;
+      margin:0 auto;
+      padding:0 24px;
+    }
 
-/* ===============================
-   SMOKE BACKGROUND
-================================ */
+    /* HERO */
+    .hero{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      position:relative;
+    }
 
-body::before{
-content:"";
-position:fixed;
-width:200%;
-height:200%;
-background:
-radial-gradient(circle at 20% 30%,rgba(255,255,255,.08),transparent 40%),
-radial-gradient(circle at 70% 60%,rgba(255,255,255,.06),transparent 45%),
-radial-gradient(circle at 40% 80%,rgba(255,255,255,.05),transparent 40%);
-animation:smokeMove 20s infinite linear;
-z-index:-1;
-}
+    .logo-btn{
+      border:none;
+      background:transparent;
+      cursor:pointer;
+      display:inline-flex;
+      flex-direction:column;
+      align-items:center;
+      gap:18px;
+      padding:18px;
+    }
 
-@keyframes smokeMove{
-0%{transform:translateY(0)}
-50%{transform:translateY(-60px)}
-100%{transform:translateY(0)}
-}
+    /* LOGO (без квадрата = используем logo2.png) */
+    .logo{
+      width:520px;
+      max-width:90%;
+      display:block;
+      user-select:none;
+      filter: drop-shadow(0 0 26px rgba(255,255,255,.22));
+      animation: float 6s ease-in-out infinite;
+      transition: transform .25s ease, filter .25s ease;
+    }
+    .logo-btn:hover .logo{
+      transform: scale(1.03);
+      filter: drop-shadow(0 0 44px rgba(255,255,255,.38));
+    }
 
-/* ===============================
-   HERO
-================================ */
+    @keyframes float{
+      0%{ transform: translateY(0); }
+      50%{ transform: translateY(-14px); }
+      100%{ transform: translateY(0); }
+    }
 
-.hero{
-text-align:center;
-padding-top:120px;
-padding-bottom:120px;
-}
+    .tagline{
+      letter-spacing:5px;
+      font-size:20px;
+      color:var(--muted);
+      text-transform:uppercase;
+      margin-top:6px;
+    }
+    .hint{
+      margin-top:10px;
+      font-size:13px;
+      letter-spacing:3px;
+      color:rgba(255,255,255,.45);
+      text-transform:uppercase;
+    }
 
-.logo{
-width:420px;
-max-width:90%;
-display:block;
-margin:auto;
-cursor:pointer;
-filter:drop-shadow(0 0 35px rgba(255,255,255,.35));
-animation:logoFloat 6s ease-in-out infinite;
-}
+    /* SECTION */
+    .section{
+      padding:70px 0 90px;
+    }
 
-@keyframes logoFloat{
-0%{transform:translateY(0)}
-50%{transform:translateY(-15px)}
-100%{transform:translateY(0)}
-}
+    .section-head{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:16px;
+      margin-bottom:28px;
+      opacity:.95;
+    }
+    .section-head .line{
+      height:1px;
+      width:260px;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
+    }
+    .section-head h2{
+      font-size:18px;
+      letter-spacing:7px;
+      text-transform:uppercase;
+      font-weight:900;
+      color:rgba(255,255,255,.85);
+    }
 
-.tagline{
-margin-top:40px;
-font-size:20px;
-letter-spacing:4px;
-opacity:.9;
-}
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:26px;
+    }
 
-.hint{
-margin-top:10px;
-font-size:14px;
-opacity:.6;
-}
+    .card{
+      position:relative;
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      box-shadow: 0 0 0 1px rgba(255,255,255,.04) inset;
+      overflow:hidden;
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+      padding:22px;
+      backdrop-filter: blur(10px);
+    }
 
-/* ===============================
-   SECTION TITLE
-================================ */
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      background: radial-gradient(900px 420px at 50% 0%, rgba(255,255,255,.10), transparent 55%);
+      pointer-events:none;
+      opacity:.55;
+    }
 
-.section-title{
-text-align:center;
-margin:80px 0 40px;
-font-size:20px;
-letter-spacing:6px;
-}
+    .card:hover{
+      transform: translateY(-6px);
+      border-color: rgba(255,255,255,.28);
+      box-shadow: 0 16px 60px rgba(0,0,0,.55), 0 0 38px rgba(255,255,255,.08);
+    }
 
-/* ===============================
-   GRID
-================================ */
+    .who{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom:14px;
+    }
+    .mystery{
+      width:44px;
+      height:44px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.22);
+      display:grid;
+      place-items:center;
+      background: rgba(255,255,255,.04);
+      box-shadow: 0 0 18px rgba(255,255,255,.08);
+      flex:0 0 auto;
+    }
+    .mystery span{
+      font-size:18px;
+      letter-spacing:2px;
+      color:rgba(255,255,255,.85);
+    }
+    .nick{
+      font-size:18px;
+      letter-spacing:3px;
+      text-transform:uppercase;
+      font-weight:900;
+      line-height:1.1;
+    }
+    .role{
+      font-size:12px;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.55);
+      margin-top:2px;
+    }
 
-.grid{
-max-width:1200px;
-margin:auto;
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:40px;
-padding:0 20px 100px;
-}
+    .price{
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.25);
+      padding:12px 14px;
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      margin-bottom:14px;
+    }
+    .price .col{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      width:50%;
+    }
+    .price .row{
+      display:flex;
+      justify-content:space-between;
+      font-size:13px;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.85);
+    }
+    .price .row b{
+      font-weight:900;
+      color:#fff;
+    }
 
-/* ===============================
-   CARD
-================================ */
+    .btns{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .btn{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.03);
+      color:rgba(255,255,255,.9);
+      text-decoration:none;
+      padding:11px 15px;
+      letter-spacing:3px;
+      text-transform:uppercase;
+      font-size:12px;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .btn::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      transform: translateX(-120%);
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,.22), transparent);
+      transition: transform .55s ease;
+    }
+    .btn:hover::before{ transform: translateX(120%); }
+    .btn:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,.35);
+      box-shadow: 0 0 26px rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+    }
 
-.card{
-background:rgba(0,0,0,.35);
-border:1px solid rgba(255,255,255,.15);
-padding:25px;
-backdrop-filter:blur(6px);
-transition:.3s;
-}
+    .videos{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      margin-top:6px;
+    }
+    .video{
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.22);
+      padding:10px;
+    }
+    .video iframe{
+      width:100%;
+      height:280px;
+      border:0;
+      display:block;
+    }
+    .vlabel{
+      margin-top:8px;
+      font-size:11px;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.55);
+    }
 
-.card:hover{
-transform:translateY(-6px);
-border-color:rgba(255,255,255,.35);
-}
+    .footer{
+      padding:44px 0 70px;
+      color:rgba(255,255,255,.45);
+      text-transform:uppercase;
+      letter-spacing:3px;
+      font-size:12px;
+      text-align:center;
+    }
 
-/* ===============================
-   CREATOR INFO
-================================ */
-
-.creator-head{
-display:flex;
-align-items:center;
-gap:15px;
-margin-bottom:15px;
-}
-
-.avatar{
-width:40px;
-height:40px;
-border-radius:50%;
-border:1px solid rgba(255,255,255,.4);
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:18px;
-}
-
-.name{
-font-size:18px;
-letter-spacing:2px;
-}
-
-.role{
-font-size:12px;
-opacity:.6;
-}
-
-/* ===============================
-   PRICES
-================================ */
-
-.prices{
-border:1px solid rgba(255,255,255,.25);
-padding:12px 15px;
-margin-bottom:20px;
-display:flex;
-justify-content:space-between;
-font-size:14px;
-}
-
-/* ===============================
-   BUTTONS
-================================ */
-
-.buttons{
-display:flex;
-gap:10px;
-margin-bottom:20px;
-}
-
-.buttons a{
-flex:1;
-text-align:center;
-padding:10px;
-border:1px solid rgba(255,255,255,.3);
-text-decoration:none;
-color:white;
-font-size:13px;
-transition:.25s;
-}
-
-.buttons a:hover{
-background:white;
-color:black;
-}
-
-/* ===============================
-   VIDEO
-================================ */
-
-iframe{
-width:100%;
-height:260px;
-border:none;
-}
-
-/* ===============================
-   RESPONSIVE
-================================ */
-
-@media(max-width:900px){
-
-.grid{
-grid-template-columns:1fr;
-}
-
-.logo{
-width:300px;
-}
-
-}
-
-</style>
-
+    /* Small reveal */
+    .reveal{
+      opacity:0;
+      transform: translateY(10px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .reveal.show{
+      opacity:1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
 
 <body>
+  <canvas id="smoke"></canvas>
+  <div class="noise"></div>
 
-<!-- HERO -->
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <button class="logo-btn" id="goCreators" aria-label="Перейти к создателям">
+        <!-- ВАЖНО: logo2.png (вырезанный, без квадрата) -->
+        <img class="logo" src="./assets/logo2.png" alt="2033 Mods">
+        <div class="tagline">Redux • Gun Packs • GTA 5 RP</div>
+        <div class="hint">Нажми на логотип</div>
+      </button>
+    </div>
+  </section>
 
-<section class="hero">
+  <!-- CREATORS -->
+  <section class="section" id="creators">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="line"></div>
+        <h2>Creators</h2>
+        <div class="line"></div>
+      </div>
 
-<img src="./assets/logo2033.png" class="logo">
+      <div class="grid">
+        <!-- CHKMNP -->
+        <article class="card reveal">
+          <div class="who">
+            <div class="mystery" title="mystery"><span>?</span></div>
+            <div>
+              <div class="nick">.chkmnp</div>
+              <div class="role">YouTube creator</div>
+            </div>
+          </div>
 
-<div class="tagline">
-REDUX • GUN PACKS • GTA 5 RP
-</div>
+          <div class="price">
+            <div class="col">
+              <div class="row"><span>Gun Pack</span> <b>1500₽+</b></div>
+              <div class="row"><span>Redux</span> <b>1000₽+</b></div>
+            </div>
+            <div class="col">
+              <div class="row"><span>Custom</span> <b>дог.</b></div>
+              <div class="row"><span>Support</span> <b>TG/DS</b></div>
+            </div>
+          </div>
 
-<div class="hint">
-НАЖМИ НА ЛОГОТИП
-</div>
+          <div class="btns">
+            <a class="btn" href="https://www.youtube.com/@chkmnpys" target="_blank" rel="noopener">YouTube</a>
+            <a class="btn" href="https://t.me/yagichmods" target="_blank" rel="noopener">Telegram</a>
+            <a class="btn" href="https://discord.gg/UBzjrRff" target="_blank" rel="noopener">Discord</a>
+          </div>
 
-</section>
+          <div class="videos">
+            <div class="video">
+              <iframe
+                src="https://www.youtube.com/embed/3By-fNiA5JE"
+                title="CHKMNP — Redux"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
+              <div class="vlabel">Redux showcase</div>
+            </div>
 
-<!-- CREATORS -->
+            <div class="video">
+              <iframe
+                src="https://www.youtube.com/embed/YYXTklnmttE"
+                title="CHKMNP — Work"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
+              <div class="vlabel">Work showcase</div>
+            </div>
+          </div>
+        </article>
 
-<div class="section-title">CREATORS</div>
+        <!-- NBAHONE -->
+        <article class="card reveal">
+          <div class="who">
+            <div class="mystery" title="mystery"><span>?</span></div>
+            <div>
+              <div class="nick">nbahone</div>
+              <div class="role">YouTube creator</div>
+            </div>
+          </div>
 
-<div class="grid">
+          <div class="price">
+            <div class="col">
+              <div class="row"><span>Gun Pack</span> <b>1500₽+</b></div>
+              <div class="row"><span>Redux</span> <b>1000₽+</b></div>
+            </div>
+            <div class="col">
+              <div class="row"><span>Custom</span> <b>дог.</b></div>
+              <div class="row"><span>Support</span> <b>TG/DS</b></div>
+            </div>
+          </div>
 
-<!-- CARD 1 -->
+          <div class="btns">
+            <a class="btn" href="https://www.youtube.com/@nbahone5rp" target="_blank" rel="noopener">YouTube</a>
+            <a class="btn" href="https://t.me/yagichmods" target="_blank" rel="noopener">Telegram</a>
+            <a class="btn" href="https://discord.gg/UBzjrRff" target="_blank" rel="noopener">Discord</a>
+          </div>
 
-<div class="card">
+          <div class="videos">
+            <div class="video">
+              <iframe
+                src="https://www.youtube.com/embed/7Z6VPhn7ue8"
+                title="NBaHone — Work"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
+              <div class="vlabel">Work showcase</div>
+            </div>
+          </div>
+        </article>
+      </div>
 
-<div class="creator-head">
-<div class="avatar">?</div>
-<div>
-<div class="name">.CHKMNP</div>
-<div class="role">YOUTUBE CREATOR</div>
-</div>
-</div>
+      <div class="footer">© 2033 Mods</div>
+    </div>
+  </section>
 
-<div class="prices">
-<div>Gun Pack</div>
-<div><b>1500₽+</b></div>
-</
+  <script>
+    // click logo => scroll to creators
+    document.getElementById("goCreators").addEventListener("click", () => {
+      document.getElementById("creators").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    // reveal on view
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) e.target.classList.add("show");
+    }, { threshold: 0.12 });
+    document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+    // Smoke (плотнее и красивее)
+    const canvas = document.getElementById("smoke");
+    const ctx = canvas.getContext("2d");
+
+    function resize(){
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    const P_COUNT = 140;
+    const particles = [];
+    function rand(a,b){ return a + Math.random()*(b-a); }
+
+    for(let i=0;i<P_COUNT;i++){
+      particles.push({
+        x: rand(0, canvas.width),
+        y: rand(0, canvas.height),
+        r: rand(20, 70),
+        vx: rand(-0.22, 0.22),
+        vy: rand(-0.26, -0.06),
+        a: rand(0.02, 0.065)
+      });
+    }
+
+    function step(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      for(const p of particles){
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if(p.y < -p.r) { p.y = canvas.height + p.r; p.x = rand(0, canvas.width); }
+        if(p.x < -p.r) p.x = canvas.width + p.r;
+        if(p.x > canvas.width + p.r) p.x = -p.r;
+
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+        g.addColorStop(0, `rgba(255,255,255,${p.a})`);
+        g.addColorStop(1, "rgba(255,255,255,0)");
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        ctx.fill();
+      }
+
+      requestAnimationFrame(step);
+    }
+    step();
+  </script>
+</body>
+</html>
