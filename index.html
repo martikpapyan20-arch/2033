@@ -7,23 +7,29 @@
 
 <style>
 
+:root{
+--bg:#050506;
+--card:#0b0b0f;
+--line:rgba(255,255,255,.12);
+--text:rgba(255,255,255,.9);
+--muted:rgba(255,255,255,.6);
+}
+
 *{
+box-sizing:border-box;
 margin:0;
 padding:0;
-box-sizing:border-box;
 font-family:Arial;
 }
 
 body{
-background:#050506;
-color:white;
+background:radial-gradient(1200px 700px at 50% 10%,#101117 0%,#050506 60%,#000 100%);
+color:var(--text);
+height:100vh;
 overflow:hidden;
 display:flex;
 justify-content:center;
 align-items:center;
-height:100vh;
-flex-direction:column;
-text-align:center;
 }
 
 /* дым */
@@ -35,78 +41,77 @@ left:0;
 z-index:0;
 }
 
-/* основной блок */
+/* центр */
 
-.main{
-position:relative;
+.center{
+text-align:center;
 z-index:2;
-animation:fade 1.2s ease;
+position:relative;
 }
 
 /* логотип */
 
 .logo{
 width:420px;
-margin-bottom:30px;
-animation:float 6s ease-in-out infinite;
+cursor:pointer;
 filter:drop-shadow(0 0 25px rgba(255,255,255,.25));
+animation:float 6s ease-in-out infinite;
 transition:.4s;
 }
 
 .logo:hover{
-transform:scale(1.07);
-filter:drop-shadow(0 0 55px rgba(255,255,255,.45));
+transform:scale(1.06);
+filter:drop-shadow(0 0 50px rgba(255,255,255,.5));
 }
 
-/* текст */
-
-.tag{
+.tagline{
+margin-top:20px;
 letter-spacing:4px;
-font-size:18px;
-color:#aaa;
-margin-bottom:40px;
+color:var(--muted);
 }
 
 /* карточки */
 
 .cards{
+position:absolute;
+top:55%;
+left:50%;
+transform:translate(-50%,-50%);
 display:flex;
 gap:40px;
-justify-content:center;
-flex-wrap:wrap;
+opacity:0;
+pointer-events:none;
+transition:1s;
 }
 
-/* карточка */
+.cards.show{
+opacity:1;
+pointer-events:auto;
+}
 
 .card{
-background:rgba(15,15,18,.8);
-border:1px solid #222;
+width:280px;
 padding:30px;
-width:300px;
+background:var(--card);
+border:1px solid var(--line);
+text-align:center;
 transition:.4s;
-backdrop-filter:blur(10px);
 }
 
 .card:hover{
-transform:translateY(-12px) scale(1.04);
-box-shadow:0 0 60px rgba(255,255,255,.07);
-border:1px solid #555;
+transform:translateY(-10px) scale(1.03);
+box-shadow:0 0 50px rgba(255,255,255,.06);
 }
-
-/* имя */
 
 .name{
 font-size:20px;
-margin-bottom:15px;
 letter-spacing:2px;
+margin-bottom:15px;
 }
-
-/* цены */
 
 .price{
 margin:6px 0;
-font-size:16px;
-color:#ddd;
+color:var(--muted);
 }
 
 /* кнопки */
@@ -119,43 +124,25 @@ gap:8px;
 }
 
 .links a{
-border:1px solid #444;
-padding:9px;
-text-decoration:none;
+border:1px solid var(--line);
+padding:8px;
 color:white;
+text-decoration:none;
 font-size:13px;
 transition:.3s;
-background:rgba(255,255,255,.02);
 }
 
 .links a:hover{
 background:white;
 color:black;
-box-shadow:0 0 25px rgba(255,255,255,.3);
 }
 
-/* анимации */
+/* анимация */
 
 @keyframes float{
-
 0%{transform:translateY(0)}
 50%{transform:translateY(-12px)}
 100%{transform:translateY(0)}
-
-}
-
-@keyframes fade{
-
-0%{
-opacity:0;
-transform:translateY(40px);
-}
-
-100%{
-opacity:1;
-transform:translateY(0);
-}
-
 }
 
 </style>
@@ -165,17 +152,17 @@ transform:translateY(0);
 
 <canvas id="smoke"></canvas>
 
-<div class="main">
+<div class="center">
 
-<img src="./assets/logo2.png" class="logo">
+<img src="./assets/logo2.png" class="logo" id="logo">
 
-<div class="tag">
+<div class="tagline">
 REDUX • GUN PACKS • GTA 5 RP
 </div>
 
-<div class="cards">
+</div>
 
-<!-- CHKMNP -->
+<div class="cards" id="cards">
 
 <div class="card">
 
@@ -185,24 +172,12 @@ REDUX • GUN PACKS • GTA 5 RP
 <div class="price">Redux — 1000₽+</div>
 
 <div class="links">
-
-<a href="https://www.youtube.com/@chkmnpys" target="_blank">
-YouTube
-</a>
-
-<a href="https://t.me/yagichmods" target="_blank">
-Telegram
-</a>
-
-<a href="https://discord.gg/UBzjrRff" target="_blank">
-Discord
-</a>
-
+<a href="https://www.youtube.com/@chkmnpys" target="_blank">YouTube</a>
+<a href="https://t.me/yagichmods" target="_blank">Telegram</a>
+<a href="https://discord.gg/UBzjrRff" target="_blank">Discord</a>
 </div>
 
 </div>
-
-<!-- NBAHONE -->
 
 <div class="card">
 
@@ -212,21 +187,9 @@ Discord
 <div class="price">Redux — 1000₽+</div>
 
 <div class="links">
-
-<a href="https://www.youtube.com/@nbahone5rp" target="_blank">
-YouTube
-</a>
-
-<a href="https://t.me/yagichmods" target="_blank">
-Telegram
-</a>
-
-<a href="https://discord.gg/UBzjrRff" target="_blank">
-Discord
-</a>
-
-</div>
-
+<a href="https://www.youtube.com/@nbahone5rp" target="_blank">YouTube</a>
+<a href="https://t.me/yagichmods" target="_blank">Telegram</a>
+<a href="https://discord.gg/UBzjrRff" target="_blank">Discord</a>
 </div>
 
 </div>
@@ -234,6 +197,14 @@ Discord
 </div>
 
 <script>
+
+/* логотип → открыть карточки */
+
+document.getElementById("logo").onclick=()=>{
+document.getElementById("cards").classList.toggle("show")
+}
+
+/* дым */
 
 const canvas=document.getElementById("smoke");
 const ctx=canvas.getContext("2d");
@@ -250,41 +221,39 @@ x:Math.random()*w,
 y:Math.random()*h,
 r:Math.random()*2+1,
 v:Math.random()*0.4+0.1
-});
+})
 
 }
 
 function draw(){
 
-ctx.clearRect(0,0,w,h);
+ctx.clearRect(0,0,w,h)
 
 p.forEach(e=>{
 
-e.y-=e.v;
+e.y-=e.v
 
 if(e.y<0){
-e.y=h;
-e.x=Math.random()*w;
+e.y=h
+e.x=Math.random()*w
 }
 
-ctx.beginPath();
-ctx.arc(e.x,e.y,e.r,0,Math.PI*2);
-ctx.fillStyle="rgba(255,255,255,0.06)";
-ctx.fill();
+ctx.beginPath()
+ctx.arc(e.x,e.y,e.r,0,Math.PI*2)
+ctx.fillStyle="rgba(255,255,255,.05)"
+ctx.fill()
 
-});
+})
 
-requestAnimationFrame(draw);
+requestAnimationFrame(draw)
 
 }
 
-draw();
+draw()
 
 window.onresize=()=>{
-
-w=canvas.width=window.innerWidth;
-h=canvas.height=window.innerHeight;
-
+w=canvas.width=window.innerWidth
+h=canvas.height=window.innerHeight
 }
 
 </script>
