@@ -1,282 +1,293 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2033 Mods</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2033 Mods</title>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial;
-    }
+<style>
 
-    body {
-      background: #050506;
-      color: white;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      flex-direction: column;
-      text-align: center;
-    }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
 
-    /* canvas дым */
+body{
+background:#050506;
+color:white;
+overflow:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+flex-direction:column;
+text-align:center;
+}
 
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 0;
-    }
+/* дым */
 
-    /* основной блок */
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:0;
+}
 
-    .main {
-      position: relative;
-      z-index: 2;
-    }
+/* основной блок */
 
-    /* логотип */
+.main{
+position:relative;
+z-index:2;
+animation:fade 1.2s ease;
+}
 
-    .logo {
-      width: 420px;
-      margin-bottom: 30px;
-      animation: float 6s ease-in-out infinite;
-      filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.25));
-    }
+/* логотип */
 
-    .logo:hover {
-      transform: scale(1.05);
-    }
+.logo{
+width:420px;
+margin-bottom:30px;
+animation:float 6s ease-in-out infinite;
+filter:drop-shadow(0 0 25px rgba(255,255,255,.25));
+transition:.4s;
+}
 
-    /* подпись */
+.logo:hover{
+transform:scale(1.07);
+filter:drop-shadow(0 0 55px rgba(255,255,255,.45));
+}
 
-    .tag {
-      letter-spacing: 4px;
-      font-size: 18px;
-      color: #aaa;
-      margin-bottom: 40px;
-    }
+/* текст */
 
-    /* карточки */
+.tag{
+letter-spacing:4px;
+font-size:18px;
+color:#aaa;
+margin-bottom:40px;
+}
 
-    .cards {
-      display: flex;
-      gap: 40px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+/* карточки */
 
-    /* карточка */
+.cards{
+display:flex;
+gap:40px;
+justify-content:center;
+flex-wrap:wrap;
+}
 
-    .card {
-      background: #0b0b0f;
-      border: 1px solid #222;
-      padding: 30px;
-      width: 300px;
-      transition: 0.3s;
-    }
+/* карточка */
 
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 0 40px rgba(255, 255, 255, 0.05);
-    }
+.card{
+background:rgba(15,15,18,.8);
+border:1px solid #222;
+padding:30px;
+width:300px;
+transition:.4s;
+backdrop-filter:blur(10px);
+}
 
-    /* имя */
+.card:hover{
+transform:translateY(-12px) scale(1.04);
+box-shadow:0 0 60px rgba(255,255,255,.07);
+border:1px solid #555;
+}
 
-    .name {
-      font-size: 20px;
-      margin-bottom: 15px;
-      letter-spacing: 2px;
-    }
+/* имя */
 
-    /* цена */
+.name{
+font-size:20px;
+margin-bottom:15px;
+letter-spacing:2px;
+}
 
-    .price {
-      margin: 6px 0;
-      font-size: 16px;
-      color: #ddd;
-    }
+/* цены */
 
-    /* кнопки */
+.price{
+margin:6px 0;
+font-size:16px;
+color:#ddd;
+}
 
-    .links {
-      margin-top: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+/* кнопки */
 
-    .links a {
-      border: 1px solid #444;
-      padding: 8px;
-      text-decoration: none;
-      color: white;
-      font-size: 13px;
-      transition: 0.3s;
-    }
+.links{
+margin-top:15px;
+display:flex;
+flex-direction:column;
+gap:8px;
+}
 
-    .links a:hover {
-      background: white;
-      color: black;
-    }
+.links a{
+border:1px solid #444;
+padding:9px;
+text-decoration:none;
+color:white;
+font-size:13px;
+transition:.3s;
+background:rgba(255,255,255,.02);
+}
 
-    /* анимация логотипа */
+.links a:hover{
+background:white;
+color:black;
+box-shadow:0 0 25px rgba(255,255,255,.3);
+}
 
-    @keyframes float {
+/* анимации */
 
-      0% {
-        transform: translateY(0);
-      }
+@keyframes float{
 
-      50% {
-        transform: translateY(-12px);
-      }
+0%{transform:translateY(0)}
+50%{transform:translateY(-12px)}
+100%{transform:translateY(0)}
 
-      100% {
-        transform: translateY(0);
-      }
+}
 
-    }
-  </style>
+@keyframes fade{
+
+0%{
+opacity:0;
+transform:translateY(40px);
+}
+
+100%{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+</style>
 </head>
 
 <body>
 
-  <canvas id="smoke"></canvas>
+<canvas id="smoke"></canvas>
 
-  <div class="main">
+<div class="main">
 
-    <img src="./assets/logo2.png" class="logo">
+<img src="./assets/logo2.png" class="logo">
 
-    <div class="tag">
-      REDUX • GUN PACKS • GTA 5 RP
-    </div>
+<div class="tag">
+REDUX • GUN PACKS • GTA 5 RP
+</div>
 
-    <div class="cards">
+<div class="cards">
 
-      <!-- CHKMNP -->
+<!-- CHKMNP -->
 
-      <div class="card">
+<div class="card">
 
-        <div class="name">.CHKMNP</div>
+<div class="name">.CHKMNP</div>
 
-        <div class="price">Gun Pack — 1500₽+</div>
-        <div class="price">Redux — 1000₽+</div>
+<div class="price">Gun Pack — 1500₽+</div>
+<div class="price">Redux — 1000₽+</div>
 
-        <div class="links">
+<div class="links">
 
-          <a href="https://www.youtube.com/@chkmnpys" target="_blank">
-            YouTube
-          </a>
+<a href="https://www.youtube.com/@chkmnpys" target="_blank">
+YouTube
+</a>
 
-          <a href="https://t.me/yagichmods" target="_blank">
-            Telegram
-          </a>
+<a href="https://t.me/yagichmods" target="_blank">
+Telegram
+</a>
 
-          <a href="https://discord.gg/UBzjrRff" target="_blank">
-            Discord
-          </a>
+<a href="https://discord.gg/UBzjrRff" target="_blank">
+Discord
+</a>
 
-        </div>
+</div>
 
-      </div>
+</div>
 
-      <!-- NBAHONE -->
+<!-- NBAHONE -->
 
-      <div class="card">
+<div class="card">
 
-        <div class="name">NBAHONE</div>
+<div class="name">NBAHONE</div>
 
-        <div class="price">Gun Pack — 1500₽+</div>
-        <div class="price">Redux — 1000₽+</div>
+<div class="price">Gun Pack — 1500₽+</div>
+<div class="price">Redux — 1000₽+</div>
 
-        <div class="links">
+<div class="links">
 
-          <a href="https://www.youtube.com/@nbahone5rp" target="_blank">
-            YouTube
-          </a>
+<a href="https://www.youtube.com/@nbahone5rp" target="_blank">
+YouTube
+</a>
 
-          <a href="https://t.me/yagichmods" target="_blank">
-            Telegram
-          </a>
+<a href="https://t.me/yagichmods" target="_blank">
+Telegram
+</a>
 
-          <a href="https://discord.gg/UBzjrRff" target="_blank">
-            Discord
-          </a>
+<a href="https://discord.gg/UBzjrRff" target="_blank">
+Discord
+</a>
 
-        </div>
+</div>
 
-      </div>
+</div>
 
-    </div>
+</div>
 
-  </div>
+</div>
 
-  <script>
+<script>
 
-    /* дым / частицы */
+const canvas=document.getElementById("smoke");
+const ctx=canvas.getContext("2d");
 
-    const canvas = document.getElementById("smoke");
-    const ctx = canvas.getContext("2d");
+let w=canvas.width=window.innerWidth;
+let h=canvas.height=window.innerHeight;
 
-    let w = canvas.width = window.innerWidth;
-    let h = canvas.height = window.innerHeight;
+let p=[];
 
-    let p = [];
+for(let i=0;i<150;i++){
 
-    for (let i = 0; i < 80; i++) {
+p.push({
+x:Math.random()*w,
+y:Math.random()*h,
+r:Math.random()*2+1,
+v:Math.random()*0.4+0.1
+});
 
-      p.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        r: Math.random() * 2 + 1,
-        v: Math.random() * 0.4 + 0.1
-      });
+}
 
-    }
+function draw(){
 
-    function draw() {
+ctx.clearRect(0,0,w,h);
 
-      ctx.clearRect(0, 0, w, h);
+p.forEach(e=>{
 
-      p.forEach(e => {
+e.y-=e.v;
 
-        e.y -= e.v;
+if(e.y<0){
+e.y=h;
+e.x=Math.random()*w;
+}
 
-        if (e.y < 0) {
-          e.y = h;
-          e.x = Math.random() * w;
-        }
+ctx.beginPath();
+ctx.arc(e.x,e.y,e.r,0,Math.PI*2);
+ctx.fillStyle="rgba(255,255,255,0.06)";
+ctx.fill();
 
-        ctx.beginPath();
-        ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255,255,255,0.05)";
-        ctx.fill();
+});
 
-      });
+requestAnimationFrame(draw);
 
-      requestAnimationFrame(draw);
+}
 
-    }
+draw();
 
-    draw();
+window.onresize=()=>{
 
-    window.onresize = () => {
+w=canvas.width=window.innerWidth;
+h=canvas.height=window.innerHeight;
 
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
+}
 
-    }
-
-  </script>
+</script>
 
 </body>
-
 </html>
